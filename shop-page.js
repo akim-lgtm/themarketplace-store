@@ -103,6 +103,14 @@ const categories = {
     kicker: 'LITTLE ONES, BIG ADVENTURES',
     image: 'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?auto=format&fit=crop&w=1100&q=85',
     imageAlt: 'Children playing outdoors'
+  },
+  thrift: {
+    label: 'Thrift & pre-loved',
+    title: 'Good finds, with a past.',
+    description: 'Give great things another go. Browse carefully described pre-loved clothing, accessories and home finds, with condition and size shown on every listing.',
+    kicker: 'PRE-LOVED, READY FOR YOU',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1100&q=85',
+    imageAlt: 'Friends browsing clothes together'
   }
 };
 
@@ -177,13 +185,17 @@ function showToast(message) {
 
 function productCard(product, index) {
   const isSaved = savedProducts.has(product.id);
+  const listingDetails = product.condition && product.size
+    ? `<p class="product-listing-details"><span><strong>Condition</strong> ${product.condition}</span><span><strong>Size</strong> ${product.size}</span></p>`
+    : '';
   return `<article class="product-card" data-reveal data-reveal-delay="${index * 55}">
     <div class="product-image">
       <img src="${product.image}" alt="${product.name}" loading="lazy" />
-      ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
+      ${product.condition ? `<span class="product-tag">${product.condition}</span>` : product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
       <button class="wish${isSaved ? ' is-saved' : ''}" type="button" data-save-id="${product.id}" aria-label="${isSaved ? 'Remove' : 'Save'} ${product.name}" aria-pressed="${isSaved}">${isSaved ? '♥' : '♡'}</button>
     </div>
     <div class="product-info"><div><p class="product-name">${product.name}</p><span class="seller-name">By ${product.seller}</span></div><strong>${money(product.price)}</strong></div>
+    ${listingDetails}
     <button class="add" type="button" data-add-id="${product.id}">Add to bag <span aria-hidden="true">+</span></button>
   </article>`;
 }
@@ -208,7 +220,7 @@ function updateCart() {
   bagButton.setAttribute('aria-label', `Shopping bag, ${items.length} ${items.length === 1 ? 'item' : 'items'}`);
   document.querySelector('#subtotal').textContent = money(items.reduce((total, product) => total + product.price, 0));
   document.querySelector('#cart-items').innerHTML = items.length
-    ? items.map((product, index) => `<div class="cart-item"><img src="${product.image}" alt="" /><div><p>${product.name}</p><span>By ${product.seller}</span><p>${money(product.price)}</p></div><button class="remove" type="button" data-remove-index="${index}" aria-label="Remove ${product.name}">Remove</button></div>`).join('')
+    ? items.map((product, index) => `<div class="cart-item"><img src="${product.image}" alt="" /><div><p>${product.name}</p><span>By ${product.seller}</span>${product.condition && product.size ? `<p>${product.condition} · Size ${product.size}</p>` : ''}<p>${money(product.price)}</p></div><button class="remove" type="button" data-remove-index="${index}" aria-label="Remove ${product.name}">Remove</button></div>`).join('')
     : '<p class="empty-state">Your bag is ready for a little something.</p>';
 }
 
@@ -287,9 +299,9 @@ document.querySelector('#search-button').addEventListener('click', () => {
 });
 document.querySelector('#search-input').addEventListener('input', event => {
   const term = event.target.value.trim().toLowerCase();
-  const matches = products.filter(product => `${product.name} ${product.category} ${product.seller}`.toLowerCase().includes(term));
+  const matches = products.filter(product => `${product.name} ${product.category} ${product.seller} ${product.condition || ''} ${product.size || ''}`.toLowerCase().includes(term));
   document.querySelector('#search-results').innerHTML = !term ? '' : matches.length
-    ? matches.map(product => `<div class="search-result"><span><strong>${product.name}</strong><small>By ${product.seller}</small></span><span>${money(product.price)} <button type="button" data-search-add="${product.id}">Add +</button></span></div>`).join('')
+    ? matches.map(product => `<div class="search-result"><span><strong>${product.name}</strong><small>By ${product.seller}${product.condition && product.size ? ` · ${product.condition} · Size ${product.size}` : ''}</small></span><span>${money(product.price)} <button type="button" data-search-add="${product.id}">Add +</button></span></div>`).join('')
     : '<p class="search-empty">No finds yet. Try another search.</p>';
 });
 document.querySelector('#search-results').addEventListener('click', event => {

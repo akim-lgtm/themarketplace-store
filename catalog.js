@@ -5,6 +5,7 @@ window.marketplaceCategories = [
   { id: 'beauty', label: 'Beauty', group: 'Marketplace', subcategories: [{ id: 'skincare', label: 'Skincare' }, { id: 'bath-body', label: 'Bath & body' }] },
   { id: 'outdoors', label: 'Outdoors', group: 'Marketplace', subcategories: [{ id: 'camping', label: 'Camping & weekends' }, { id: 'drinkware', label: 'Mugs & drinkware' }] },
   { id: 'gifts', label: 'Gifts', group: 'Marketplace', subcategories: [{ id: 'gift-sets', label: 'Gift sets' }, { id: 'candles', label: 'Candles' }] },
+  { id: 'thrift', label: 'Thrift & pre-loved', group: 'Marketplace', subcategories: [{ id: 'clothing', label: 'Clothing' }, { id: 'shoes', label: 'Shoes' }, { id: 'bags-accessories', label: 'Bags & accessories' }, { id: 'homeware', label: 'Home finds' }] },
   {
     id: 'women',
     label: 'Women',
@@ -82,7 +83,15 @@ window.marketplaceProducts = [
   { id: 11, name: 'Amber Glow Face Oil', price: 36, category: 'beauty', subcategory: 'skincare', seller: 'Wildflower Lab', tag: '', image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=700&q=80' },
   { id: 12, name: 'Trailside Enamel Mug', price: 19, category: 'outdoors', subcategory: 'drinkware', seller: 'Wilder Days', tag: 'Made to roam', image: 'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=700&q=80' },
   { id: 13, name: 'Pocket Garden Planter', price: 32, category: 'home', subcategory: 'plants', seller: 'Sunday Objects', tag: '', image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=700&q=80' },
-  { id: 14, name: 'Hand-poured Candle Duo', price: 31, category: 'gifts', subcategory: 'candles', seller: 'Bright Parcel Co.', tag: 'Gift-ready', image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=700&q=80' }
+  { id: 14, name: 'Hand-poured Candle Duo', price: 31, category: 'gifts', subcategory: 'candles', seller: 'Bright Parcel Co.', tag: 'Gift-ready', image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=700&q=80' },
+  { id: 201, name: 'Vintage Denim Trucker Jacket', price: 42, category: 'thrift', subcategory: 'clothing', seller: 'Second Story Finds', tag: '', condition: 'Very good', size: 'M', image: 'https://images.unsplash.com/photo-1543076447-215ad9ba6923?auto=format&fit=crop&w=700&q=80' },
+  { id: 202, name: 'Soft Wool Blend Coat', price: 58, category: 'thrift', subcategory: 'clothing', seller: 'Sunday Again', tag: '', condition: 'Like new', size: 'L', image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=700&q=80' },
+  { id: 203, name: 'Classic White Leather Sneakers', price: 36, category: 'thrift', subcategory: 'shoes', seller: 'Good Finds Club', tag: '', condition: 'Good', size: 'US 7', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80' },
+  { id: 204, name: 'Everyday Leather Crossbody', price: 45, category: 'thrift', subcategory: 'bags-accessories', seller: 'Second Story Finds', tag: '', condition: 'Very good', size: 'One size', image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=80' },
+  { id: 205, name: 'Relaxed Linen Button Shirt', price: 28, category: 'thrift', subcategory: 'clothing', seller: 'Sunday Again', tag: '', condition: 'New with tags', size: 'US 10', image: 'https://images.unsplash.com/photo-1598554747436-c9293d6a588f?auto=format&fit=crop&w=700&q=80' },
+  { id: 206, name: 'Hand-thrown Stoneware Vase', price: 24, category: 'thrift', subcategory: 'homeware', seller: 'The Re-loved Room', tag: '', condition: 'Like new', size: 'One size', image: 'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&w=700&q=80' },
+  { id: 207, name: 'Straight-Leg Vintage Jeans', price: 34, category: 'thrift', subcategory: 'clothing', seller: 'Good Finds Club', tag: '', condition: 'Very good', size: 'US 12', image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=700&q=80' },
+  { id: 208, name: 'Canvas Weekend Tote', price: 18, category: 'thrift', subcategory: 'bags-accessories', seller: 'The Re-loved Room', tag: '', condition: 'Good', size: 'One size', image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=700&q=80' }
 ];
 
 const fashionCatalogSeed = [
