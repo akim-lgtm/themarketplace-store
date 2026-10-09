@@ -9,10 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=thrift-listings-1" />
+    <link rel="stylesheet" href="styles.css?v=thrift-experience-2" />
     <script src="catalog.js?v=nova-catalog-4" defer></script>
     <script src="sidebar.js?v=sidebar-editorial-2" defer></script>
-    <script src="shop-page.js?v=nova-catalog-4" defer></script>
+    <script src="shop-page.js?v=thrift-experience-2" defer></script>
     <script type="module" src="account.js?v=supabase-accounts-1"></script>
   </head>
   <body>
@@ -66,6 +66,41 @@
         <div class="browse-image" data-reveal data-reveal-delay="100">
           <img id="category-image" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1100&q=85" alt="Thoughtfully curated marketplace finds" />
           <span id="category-image-note">GOOD THINGS, FOUND</span>
+        </div>
+      </section>
+
+      <section class="thrift-toolbar" id="thrift-toolbar" aria-label="Filter and sort thrift finds" hidden>
+        <label class="thrift-control"><span>Category</span>
+          <select id="thrift-category-filter">
+            <option value="">All finds</option>
+            <option value="clothing">Clothing</option>
+            <option value="shoes">Shoes</option>
+            <option value="bags-accessories">Bags & accessories</option>
+            <option value="homeware">Home finds</option>
+          </select>
+        </label>
+        <label class="thrift-control"><span>Condition</span>
+          <select id="thrift-condition-filter">
+            <option value="">Any condition</option>
+            <option value="New with tags">New with tags</option>
+            <option value="Like new">Like new</option>
+            <option value="Very good">Very good</option>
+            <option value="Good">Good</option>
+          </select>
+        </label>
+        <label class="thrift-control thrift-sort"><span>Sort by</span>
+          <select id="thrift-sort">
+            <option value="featured">Featured</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+            <option value="condition">Condition</option>
+          </select>
+        </label>
+        <span class="thrift-result-count" id="thrift-result-count" aria-live="polite"></span>
+        <div class="thrift-view-controls" role="group" aria-label="Products per row">
+          <button type="button" data-thrift-columns="2" aria-label="Show two products per row">Ⅱ</button>
+          <button type="button" data-thrift-columns="3" aria-label="Show three products per row">Ⅲ</button>
+          <button type="button" data-thrift-columns="4" aria-label="Show four products per row" aria-pressed="true">Ⅳ</button>
         </div>
       </section>
 

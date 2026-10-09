@@ -109,6 +109,18 @@ img { display: block; max-width: 100%; }
 .seller-name { color: var(--muted); font-size: 9px; }
 .product-listing-details { display: flex; flex-wrap: wrap; gap: 5px 13px; margin: 8px 1px 0; color: var(--muted); font-size: 8px; }
 .product-listing-details strong { color: var(--ink); font: 8px var(--mono); text-transform: uppercase; }
+.product-grid[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.product-grid[data-columns="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.product-grid[data-columns="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.thrift-toolbar { margin: 16px 5vw 0; display: flex; align-items: end; gap: 11px 18px; border-bottom: 1px solid var(--line); padding: 12px 0; }
+.thrift-toolbar[hidden] { display: none; }
+.thrift-control { display: grid; gap: 5px; color: var(--muted); font: 8px var(--mono); text-transform: uppercase; }
+.thrift-control select { min-width: 120px; border: 1px solid var(--line); border-radius: 2px; background: var(--white); padding: 8px 25px 8px 9px; color: var(--ink); font: 9px "Manrope", sans-serif; text-transform: none; }
+.thrift-sort { margin-left: auto; }
+.thrift-result-count { margin: 0 0 8px auto; color: var(--muted); font: 8px var(--mono); text-transform: uppercase; white-space: nowrap; }
+.thrift-view-controls { display: flex; align-items: center; gap: 3px; margin-bottom: 1px; }
+.thrift-view-controls button { width: 28px; height: 29px; border: 1px solid transparent; border-radius: 2px; background: transparent; color: var(--muted); font: 12px var(--mono); cursor: pointer; }
+.thrift-view-controls button[aria-pressed="true"], .thrift-view-controls button:hover { border-color: var(--line); color: var(--ink); }
 .add { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-top: 11px; border: 1px solid #d4d7ce; border-radius: 3px; background: transparent; padding: 10px 11px; cursor: pointer; font: 8px var(--mono); text-align: left; text-transform: uppercase; }
 .add span { font-size: 14px; }
 .add:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
@@ -235,6 +247,22 @@ html.motion-ready [data-reveal].is-visible { opacity: 1; transform: translateY(0
 .browse-products { padding-top: 67px; }
 .browse-products .product-count { margin: 0 0 3px; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
 .browse-seller { margin-top: 20px; }
+.is-thrift-page .browse-hero { min-height: 0; margin-top: 12px; padding: 20px 0 12px; display: block; overflow: visible; border-radius: 0; border-bottom: 1px solid var(--line); background: transparent; }
+.is-thrift-page .browse-copy { max-width: none; }
+.is-thrift-page .browse-copy .eyebrow { margin-bottom: 7px; }
+.is-thrift-page .browse-copy h1 { max-width: none; font-size: clamp(25px, 3vw, 36px); letter-spacing: -.055em; text-transform: uppercase; }
+.is-thrift-page .browse-copy>p:not(.eyebrow) { max-width: none; margin: 8px 0 0; font-size: 10px; }
+.is-thrift-page .browse-copy .button, .is-thrift-page .browse-image, .is-thrift-page .category-shortcuts { display: none; }
+.is-thrift-page .thrift-toolbar { margin-top: 0; }
+.is-thrift-page .browse-products { padding-top: 25px; }
+.is-thrift-page .browse-products .product-heading { display: none; }
+.is-thrift-page .product-grid { column-gap: 13px; row-gap: 20px; }
+.is-thrift-page .product-image { height: auto; aspect-ratio: .86; }
+.is-thrift-page .product-tag { background: var(--green); color: var(--ink); }
+.is-thrift-page .product-info { align-items: start; }
+.is-thrift-page .product-info p { font-size: 10px; }
+.is-thrift-page .product-listing-details { margin-top: 5px; }
+.is-thrift-page .add { min-height: 31px; margin-top: 8px; padding: 7px 9px; }
 .category-nav a:focus-visible, .category-shortcuts a:focus-visible, .main-nav a:focus-visible, .button:focus-visible, .filter:focus-visible { outline: 2px solid #78922e; outline-offset: 3px; }
 .sidebar-open { overflow: hidden; }
 .sidebar-overlay { position: fixed; inset: 0; z-index: 23; visibility: hidden; background: #18201670; opacity: 0; transition: opacity .3s, visibility .3s; }
@@ -342,10 +370,24 @@ html.motion-ready [data-reveal].is-visible { opacity: 1; transform: translateY(0
   .product-info p { font-size: 10px; }
   .product-info strong { font-size: 9px; }
   .product-tag { top: 7px; left: 7px; font-size: 7px; }
+  .thrift-toolbar { margin: 9px 4vw 0; align-items: center; flex-wrap: wrap; gap: 9px; }
+  .thrift-control { flex: 1 1 calc(50% - 9px); }
+  .thrift-control select { width: 100%; min-width: 0; padding: 8px 20px 8px 7px; font-size: 8px; }
+  .thrift-sort { margin-left: 0; }
+  .thrift-result-count { margin: 0 auto 0 0; }
+  .thrift-view-controls { margin-left: auto; }
   .filters { gap: 5px; }
   .filter { padding: 7px 9px; font-size: 7px; }
   .browse-breadcrumb { padding: 14px 4vw 0; }
   .browse-hero { margin: 12px 3vw 0; padding: 29px 6vw 18px; grid-template-columns: 1fr; gap: 19px; }
+  .is-thrift-page .browse-hero { margin: 9px 4vw 0; padding: 17px 0 12px; }
+  .is-thrift-page .browse-copy h1 { font-size: clamp(23px, 7vw, 31px); }
+  .is-thrift-page .browse-copy>p:not(.eyebrow) { font-size: 9px; }
+  .is-thrift-page .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 9px; }
+  .is-thrift-page .product-grid[data-columns="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 7px; }
+  .is-thrift-page .product-grid[data-columns="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .is-thrift-page .product-grid[data-columns="3"] .product-info { display: block; }
+  .is-thrift-page .product-grid[data-columns="3"] .product-info strong { display: block; margin-top: 3px; }
   .browse-copy h1 { font-size: clamp(40px, 11vw, 56px); }
   .browse-copy>p:not(.eyebrow) { margin: 12px 0 17px; }
   .browse-image { height: 215px; }

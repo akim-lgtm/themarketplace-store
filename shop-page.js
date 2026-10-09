@@ -140,6 +140,9 @@ const revealObserver = 'IntersectionObserver' in window
 let toastTimer;
 let cart = readStoredIds('themarketplace-cart');
 let savedProducts = new Set(readStoredIds('themarketplace-saved'));
+let thriftSort = 'featured';
+let thriftSubcategory = subcategory?.id || '';
+let thriftCondition = '';
 
 if (revealObserver) document.documentElement.classList.add('motion-ready');
 
@@ -185,10 +188,11 @@ function showToast(message) {
 
 function productCard(product, index) {
   const isSaved = savedProducts.has(product.id);
+  const revealClass = category === 'thrift' ? ' is-visible' : '';
   const listingDetails = product.condition && product.size
     ? `<p class="product-listing-details"><span><strong>Condition</strong> ${product.condition}</span><span><strong>Size</strong> ${product.size}</span></p>`
     : '';
-  return `<article class="product-card" data-reveal data-reveal-delay="${index * 55}">
+  return `<article class="product-card${revealClass}" data-reveal data-reveal-delay="${index * 55}">
     <div class="product-image">
       <img src="${product.image}" alt="${product.name}" loading="lazy" />
       ${product.condition ? `<span class="product-tag">${product.condition}</span>` : product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
@@ -203,11 +207,22 @@ function productCard(product, index) {
 function renderProducts() {
   const visible = products.filter(product => {
     const inCategory = category === 'all' || product.category === category;
-    const inSubcategory = !subcategory || product.subcategory === subcategory.id;
-    return inCategory && inSubcategory;
+    const inSubcategory = category === 'thrift' || !subcategory || product.subcategory === subcategory.id;
+    const inThriftSubcategory = !thriftSubcategory || product.subcategory === thriftSubcategory;
+    const inCondition = !thriftCondition || product.condition === thriftCondition;
+    return inCategory && inSubcategory && inThriftSubcategory && inCondition;
   });
-  grid.innerHTML = visible.map(productCard).join('');
+  const sorted = [...visible];
+  if (thriftSort === 'price-low') sorted.sort((left, right) => left.price - right.price);
+  if (thriftSort === 'price-high') sorted.sort((left, right) => right.price - left.price);
+  if (thriftSort === 'condition') {
+    const conditionOrder = ['New with tags', 'Like new', 'Very good', 'Good'];
+    sorted.sort((left, right) => conditionOrder.indexOf(left.condition) - conditionOrder.indexOf(right.condition));
+  }
+  grid.innerHTML = sorted.map(productCard).join('');
   document.querySelector('#product-count').textContent = `${visible.length} ${visible.length === 1 ? 'find' : 'finds'}`;
+  const thriftCount = document.querySelector('#thrift-result-count');
+  if (thriftCount) thriftCount.textContent = `${visible.length} ${visible.length === 1 ? 'item' : 'items'}`;
   if (visible.length === 0) grid.innerHTML = '<p class="no-results">No finds in this category just yet. Check back soon.</p>';
   observeReveals(grid);
 }
@@ -247,6 +262,37 @@ document.querySelector('#products-kicker').textContent = category === 'all' ? 'A
 document.querySelector('#breadcrumb-current').textContent = subcategory ? `${details.label} / ${subcategory.label}` : details.label;
 document.querySelector('#category-image').src = details.image;
 document.querySelector('#category-image').alt = details.imageAlt;
+if (category === 'thrift') {
+  document.body.classList.add('is-thrift-page');
+  document.querySelector('.browse-copy').classList.add('is-visible');
+  document.querySelector('#thrift-toolbar').hidden = false;
+  document.querySelector('#thrift-category-filter').value = thriftSubcategory;
+  document.querySelector('#category-description').textContent = 'One-of-a-kind pre-loved finds, ready for another story. Check each item’s condition and size before you choose.';
+  document.querySelector('#category-kicker').textContent = 'PRE-LOVED, READY FOR YOU';
+  document.querySelector('#products-title').textContent = 'Pre-loved finds';
+  document.querySelector('#products-kicker').textContent = 'ONE-OF-A-KIND FINDS';
+  document.querySelector('#thrift-category-filter').addEventListener('change', event => {
+    thriftSubcategory = event.target.value;
+    renderProducts();
+  });
+  document.querySelector('#thrift-condition-filter').addEventListener('change', event => {
+    thriftCondition = event.target.value;
+    renderProducts();
+  });
+  document.querySelector('#thrift-sort').addEventListener('change', event => {
+    thriftSort = event.target.value;
+    renderProducts();
+  });
+  document.querySelectorAll('[data-thrift-columns]').forEach(button => {
+    button.addEventListener('click', () => {
+      const columns = button.dataset.thriftColumns;
+      grid.dataset.columns = columns;
+      document.querySelectorAll('[data-thrift-columns]').forEach(option => {
+        option.setAttribute('aria-pressed', String(option === button));
+      });
+    });
+  });
+}
 document.querySelectorAll('[data-category-link]').forEach(link => {
   if (link.dataset.categoryLink === category) link.setAttribute('aria-current', 'page');
 });
