@@ -25,6 +25,7 @@ const accountConfirm = document.querySelector('#account-confirm');
 const accountTitle = document.querySelector('#account-title');
 const accountSubmit = document.querySelector('#account-submit');
 const accountButton = document.querySelector('#account-button');
+const sellerDashboardLink = document.querySelector('#seller-profile-dashboard');
 const profileAvatar = document.querySelector('#profile-avatar');
 const profileBanner = document.querySelector('#profile-banner');
 const avatarInput = document.querySelector('#profile-picture');
@@ -103,6 +104,7 @@ function renderAccountDialog() {
     accountRole = activeSession.role;
     profileRoleFields();
   }
+  sellerDashboardLink.hidden = !signedIn || activeSession.role !== 'seller';
   updateAccountButton();
 }
 
@@ -147,8 +149,17 @@ async function getClient() {
   return supabase;
 }
 
-function authRedirectUrl() {
-  return new URL('./index.html', window.location.href).toString();
+function authRedirectUrl(search = '') {
+  const url = new URL('./index.html', window.location.href);
+  url.search = search;
+  return url.toString();
+}
+
+function continueToSellerDashboard() {
+  if (new URLSearchParams(window.location.search).get('seller-login') !== '1'
+    || activeSession?.role !== 'seller') return false;
+  window.location.replace('seller.html');
+  return true;
 }
 
 async function fetchProfile(userId) {
@@ -198,7 +209,7 @@ async function signUp() {
     email,
     password,
     options: {
-      emailRedirectTo: authRedirectUrl(),
+      emailRedirectTo: authRedirectUrl(accountRole === 'seller' ? '?seller-login=1' : ''),
       data: {
         role: accountRole,
         username: name || email.split('@')[0],
@@ -212,6 +223,7 @@ async function signUp() {
   accountForm.reset();
   if (data.session) {
     await syncSession(data.session);
+    if (continueToSellerDashboard()) return;
     setMessage(profileMessage, 'Your account is ready.');
   } else {
     accountMode = 'signin';
@@ -238,6 +250,7 @@ async function signIn() {
   }
   accountForm.reset();
   await syncSession(data.session);
+  continueToSellerDashboard();
 }
 
 async function requestPasswordReset() {
@@ -581,6 +594,17 @@ async function initializeAuth() {
     const { data, error } = await client.auth.getSession();
     if (error) throw new Error(error.message);
     if (data.session) await syncSession(data.session);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('seller-login') === '1') {
+      if (continueToSellerDashboard()) return;
+      if (activeSession) {
+        openAccount(activeSession.role, 'signin');
+        setMessage(profileMessage, 'This is a shopper account. Sign out, then sign in or create a seller account to continue.', true);
+      } else {
+        openAccount('seller', params.get('create-account') === '1' ? 'signup' : 'signin');
+      }
+      return;
+    }
     if (new URLSearchParams(window.location.search).has('password-reset')) {
       if (data.session) {
         await handlePasswordRecovery(data.session);

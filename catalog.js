@@ -37,7 +37,7 @@ window.marketplaceCategories = [
     subcategories: [
       { id: 'new-in', label: 'New In' }, { id: 'bottoms', label: 'Bottoms' }, { id: 'jackets', label: 'Jackets' },
       { id: 'accessories', label: 'Accessories' }, { id: 'tops', label: 'Tops' }, { id: 'jeans', label: 'Jeans' },
-      { id: 'sets', label: 'Sets' }, { id: 'sale', label: 'Sale' }
+      { id: 'sets', label: 'Sets' }, { id: 'graphics', label: 'Graphics' }, { id: 'sale', label: 'Sale' }
     ]
   },
   {
@@ -128,6 +128,8 @@ const fashionCatalogSeed = [
   ['men', 'jackets', 'Weekend Canvas Coach Jacket', 96],
   ['men', 'accessories', 'Essential Woven Weekend Belt', 34],
   ['men', 'tops', 'Heavyweight Everyday Crew Tee', 32],
+  ['men', 'new-in', 'The Weekend Knit Polo', 48],
+  ['men', 'graphics', 'Everyday Good Energy Graphic Tee', 34],
   ['men', 'jeans', 'Fieldwork Straight Denim', 76],
   ['men', 'sets', 'Off-Duty Cotton Lounge Set', 82],
   ['men', 'sale', 'Soft Structure Pocket Shirt', 39],
@@ -145,13 +147,29 @@ const fashionCatalogSeed = [
   ['kids', 'toddler', 'Tiny Trails Cotton Play Set', 34],
   ['kids', 'sale', 'Sunny Side Easy Shorts', 18],
   ['kids', 'boys', 'Little Explorer Pocket Tee', 22],
-  ['kids', 'new-arrivals', 'Small Wonder Quilted Jacket', 52]
+  ['kids', 'new-arrivals', 'Small Wonder Quilted Jacket', 52],
+  ['men', 'new-in', 'The City Break Zip Jacket', 88],
+  ['men', 'bottoms', 'Relaxed Weekend Cargo', 68],
+  ['men', 'jackets', 'Off-Duty Bomber Jacket', 104],
+  ['men', 'tops', 'The Boxy Essential Tee', 29],
+  ['men', 'graphics', 'After Hours Type Graphic Tee', 36],
+  ['men', 'jeans', 'Easy Fit Washed Jean', 72]
 ];
 
 const fashionImages = {
   women: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80',
   'plus-curve': 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=80',
-  men: 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=700&q=80',
+  men: {
+    'new-in': 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=700&q=80',
+    bottoms: 'https://images.unsplash.com/photo-1511196044526-5cb3bcb7071b?auto=format&fit=crop&w=700&q=80',
+    jackets: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=80',
+    accessories: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=700&q=80',
+    tops: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80',
+    graphics: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=700&q=80',
+    jeans: 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=700&q=80',
+    sets: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=700&q=80',
+    sale: 'https://images.unsplash.com/photo-1598554747436-c9293d6a588f?auto=format&fit=crop&w=700&q=80'
+  },
   new: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=700&q=80',
   sport: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=700&q=80',
   kids: 'https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?auto=format&fit=crop&w=700&q=80'
@@ -165,5 +183,6 @@ window.marketplaceProducts.push(...fashionCatalogSeed.map(([category, subcategor
   subcategory,
   seller: category === 'kids' ? 'Little Day Studio' : category === 'sport' ? 'Motion House' : 'Fieldwork Studio',
   tag: subcategory === 'new-in' || subcategory === 'new-arrivals' || subcategory === 'just-dropped' ? 'Just in' : '',
-  image: fashionImages[category]
+  featured: category === 'men' && ['tops', 'jeans', 'jackets'].includes(subcategory),
+  image: typeof fashionImages[category] === 'string' ? fashionImages[category] : fashionImages[category][subcategory] || Object.values(fashionImages[category])[0]
 })));

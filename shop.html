@@ -6,14 +6,21 @@
     <meta name="theme-color" content="#f7f7f3" />
     <meta name="description" content="Browse independent shops and thoughtful finds at TheMarketPlace." />
     <title>Shop — TheMarketPlace</title>
+    <script>
+      try {
+        if (localStorage.getItem('themarketplace-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch (error) {
+        console.error('Could not restore the saved theme preference.', error);
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=thrift-experience-2" />
-    <script src="catalog.js?v=nova-catalog-4" defer></script>
+    <link rel="stylesheet" href="styles.css?v=seller-studio-1" />
+    <script src="catalog.js?v=nova-catalog-5" defer></script>
     <script src="sidebar.js?v=sidebar-editorial-2" defer></script>
-    <script src="shop-page.js?v=thrift-experience-2" defer></script>
-    <script type="module" src="account.js?v=supabase-accounts-1"></script>
+    <script type="module" src="account.js?v=seller-studio-1"></script>
+    <script type="module" src="storefront-init.js?v=seller-listings-1"></script>
   </head>
   <body>
     <div class="utility">
@@ -26,12 +33,15 @@
       <button class="icon-button mobile-menu" id="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-sidebar">☰</button>
       <a class="logo" href="index.html" aria-label="TheMarketPlace home"><span class="logo-mark">m</span><span>TheMarket<span class="logo-accent">Place</span></span></a>
       <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <a href="shop.html?category=men">Men</a>
         <a href="shop.html">Shop all</a>
         <a href="index.html#categories">Categories</a>
         <a href="index.html#sell">Sell with us</a>
       </nav>
       <div class="header-actions">
         <button class="search-button" id="search-button" type="button"><span aria-hidden="true">⌕</span><span>Search anything</span></button>
+        <button class="icon-button theme-button" id="theme-button" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span></button>
+        <button class="icon-button wishlist-button" id="wishlist-button" type="button" aria-label="Wishlist, 0 saved items" aria-haspopup="dialog" aria-controls="wishlist-dialog"><span aria-hidden="true">♡</span><span class="wishlist-count" id="wishlist-count">0</span></button>
         <button class="icon-button account-button" id="account-button" type="button" aria-label="Your account">♙</button>
         <button class="bag-button" id="bag-button" type="button" aria-label="Shopping bag, 0 items">Bag <span id="bag-count">0</span></button>
       </div>
@@ -66,6 +76,39 @@
         <div class="browse-image" data-reveal data-reveal-delay="100">
           <img id="category-image" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1100&q=85" alt="Thoughtfully curated marketplace finds" />
           <span id="category-image-note">GOOD THINGS, FOUND</span>
+        </div>
+      </section>
+
+      <nav class="men-category-links" id="men-category-links" aria-label="Shop men's clothing" hidden></nav>
+
+      <section class="men-collection-grid" id="men-collection-grid" aria-label="Men's collections" hidden>
+        <a class="men-collection-card men-collection-denim" href="shop.html?category=men&subcategory=jeans" data-reveal>
+          <img src="https://images.unsplash.com/photo-1511196044526-5cb3bcb7071b?auto=format&fit=crop&w=900&q=80" alt="Classic denim styled for everyday wear" />
+          <span>THE EVERYDAY DENIM EDIT</span><strong>Denim, on repeat <i aria-hidden="true">→</i></strong>
+        </a>
+        <a class="men-collection-card men-collection-layers" href="shop.html?category=men&subcategory=jackets" data-reveal data-reveal-delay="70">
+          <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=700&q=80" alt="Relaxed contemporary menswear" />
+          <span>LAYERS FOR THE LONG RUN</span><strong>Easy outerwear <i aria-hidden="true">→</i></strong>
+        </a>
+        <a class="men-collection-card men-collection-sets" href="shop.html?category=men&subcategory=sets" data-reveal data-reveal-delay="140">
+          <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=700&q=80" alt="Comfortable coordinated everyday clothing" />
+          <span>OFF-DUTY, WELL-DRESSED</span><strong>Matching sets <i aria-hidden="true">→</i></strong>
+        </a>
+        <a class="men-collection-card men-collection-graphics" href="shop.html?category=men&subcategory=graphics" data-reveal data-reveal-delay="210">
+          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80" alt="Graphic tees and everyday essentials" />
+          <span>MAKE IT YOURS</span><strong>Graphic tees <i aria-hidden="true">→</i></strong>
+        </a>
+      </section>
+
+      <section class="men-trending" id="men-trending" aria-label="Trending men's products" hidden>
+        <div class="men-trending-heading"><div><p class="eyebrow">THE LATEST EDIT</p><h2>Trending now</h2></div><span id="men-trending-count" aria-live="polite"></span></div>
+        <div class="men-trending-tabs" role="group" aria-label="Filter trending men's products">
+          <button type="button" data-men-filter="all" aria-pressed="true">For you</button>
+          <button type="button" data-men-filter="new-in" aria-pressed="false">New in</button>
+          <button type="button" data-men-filter="bestsellers" aria-pressed="false">Best sellers</button>
+          <button type="button" data-men-filter="sale" aria-pressed="false">Sale</button>
+          <button type="button" data-men-filter="graphics" aria-pressed="false">Graphics</button>
+          <button type="button" data-men-filter="jeans" aria-pressed="false">Jeans</button>
         </div>
       </section>
 
@@ -139,8 +182,8 @@
     <footer class="footer">
       <a class="logo footer-logo" href="index.html"><span class="logo-mark">m</span><span>TheMarket<span class="logo-accent">Place</span></span></a>
       <p>Independent finds. Everyday favourites. A marketplace with a little more heart.</p>
-      <nav aria-label="Footer navigation"><a href="index.html#categories">Categories</a><a href="shop.html">Discover</a><a href="index.html#sell">Sell with us</a><a href="index.html#newsletter">Get in touch</a></nav>
-      <div class="footer-bottom"><span>© 2026 TheMarketPlace</span><span>Made for finding good things.</span></div>
+      <nav aria-label="Footer navigation"><a href="index.html#categories">Categories</a><a href="shop.html?category=men">Men</a><a href="shop.html">Discover</a><a href="index.html#sell">Sell with us</a><a href="pages.html?page=about">About</a><a href="pages.html?page=shipping">Shipping</a><a href="pages.html?page=returns">Returns</a><a href="pages.html?page=size-guide">Size guide</a><a href="pages.html?page=faq">FAQs</a><a href="pages.html?page=contact">Contact</a></nav>
+      <div class="footer-bottom"><span>© 2026 TheMarketPlace</span><span><a href="pages.html?page=privacy">Privacy</a> · <a href="pages.html?page=terms">Terms</a> · Made for finding good things.</span></div>
     </footer>
 
     <aside class="site-sidebar" id="site-sidebar" role="dialog" aria-modal="true" aria-labelledby="sidebar-title" aria-hidden="true" inert>
@@ -169,6 +212,14 @@
     <div class="overlay" id="overlay" aria-hidden="true"></div>
     <dialog id="search-dialog" aria-labelledby="search-title">
       <form method="dialog"><div class="search-head"><label id="search-title" for="search-input">What are you looking for?</label><button class="icon-button" type="submit" aria-label="Close search">×</button></div><input id="search-input" autocomplete="off" placeholder="Try “lamp”, “headphones” or “weekend”" /><div id="search-results" class="search-results"></div></form>
+    </dialog>
+    <dialog class="product-dialog" id="product-dialog" aria-labelledby="product-dialog-title">
+      <div class="product-dialog-head"><p class="eyebrow" id="product-dialog-title">PRODUCT DETAILS</p><button class="icon-button" id="close-product-dialog" type="button" aria-label="Close product details">×</button></div>
+      <div class="product-detail-content" id="product-detail-content"></div>
+    </dialog>
+    <dialog class="wishlist-dialog" id="wishlist-dialog" aria-labelledby="wishlist-title">
+      <div class="wishlist-dialog-head"><div><p class="eyebrow">SAVED FOR LATER</p><h2 id="wishlist-title">Your wishlist <span id="wishlist-dialog-count">(0)</span></h2></div><button class="icon-button" id="close-wishlist" type="button" aria-label="Close wishlist">×</button></div>
+      <div class="wishlist-items" id="wishlist-items"></div>
     </dialog>
     <dialog class="account-dialog" id="account-dialog" aria-labelledby="account-title">
       <div class="account-dialog-head">
@@ -214,6 +265,7 @@
         <div class="account-profile-intro">
           <p class="account-profile-welcome" id="account-profile-welcome"></p>
           <p id="profile-email"></p>
+          <a class="seller-profile-dashboard" id="seller-profile-dashboard" href="seller.html" hidden>Open Seller Studio <span aria-hidden="true">→</span></a>
         </div>
         <form id="profile-form" class="account-form account-profile-form">
           <div class="account-image-fields">
